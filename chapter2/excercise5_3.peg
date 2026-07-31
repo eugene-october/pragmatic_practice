@@ -1,0 +1,35 @@
+time     = fullhours ':' minutes ampm?
+           / shorthours ampm
+fullhours
+         = '20'
+           / '21'
+           / '22'
+           / '23'
+           / '1' digit
+           / nonzerodigit
+shorthours
+         = '11'
+           / '12'
+           / nonzerodigit
+minutes  = minuteslead digit
+minuteslead
+         = '0'
+           / '1'
+           / '2'
+           / '3'
+           / '4'
+           / '5'
+ampm     = 'am'
+           / 'pm'
+nonzerodigit
+         = '1'
+           / '2'
+           / '3'
+           / '4'
+           / '5'
+           / '6'
+           / '7'
+           / '8'
+           / '9'
+digit    = '0'
+           / nonzerodigit

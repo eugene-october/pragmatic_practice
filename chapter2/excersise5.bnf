@@ -1,0 +1,11 @@
+<nonzerodigit> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<minuteslead> ::= "0" | "1" | "2" | "3" | "4" | "5"
+<minutes> ::= <minuteslead> <digit>
+<hourslead> ::= "1" | "2"
+<hoursleft> ::= "0" | "1" | "2" | "3"
+<hoursampm> ::= <digit> | "10" | "11" | "12"
+<hours> ::= <hourslead> <hoursleft> | <hoursampm>
+<colon> ::= ":"
+<ampm> ::= "am" | "pm"
+<time> ::= <hoursampm> <ampm> | <hours> <colon> <minutes> | <hours> <colon> <minutes> <ampm>

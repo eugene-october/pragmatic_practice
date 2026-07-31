@@ -1,0 +1,4 @@
+parsimonious==0.11.0
+pegen==0.3.0
+ply==3.11
+regex==2026.1.15

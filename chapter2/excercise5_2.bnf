@@ -1,0 +1,8 @@
+<nonzerodigit> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit> ::= "0" | <nonzerodigit>
+<minuteslead> ::= "0" | "1" | "2" | "3" | "4" | "5"
+<minutes> ::= <minuteslead> <digit>
+<ampm> ::= "am" | "pm"
+<fullhours> ::= <nonzerodigit> | "1" <digit> | "20" | "21" | "22" | "23"
+<shorthours> ::= <nonzerodigit> | "11" | "12"
+<time> ::= <fullhours> ":" <minutes> | <shorthours> <ampm> | <shorthours> ":" <minutes> | <shorthours> ":" <minutes> <ampm>
