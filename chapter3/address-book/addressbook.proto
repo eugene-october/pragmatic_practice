@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option csharp_namespace = "address_book";
+
+message AddressBook {
+    string name = 1;
+    string phone = 2;
+    string address = 3;
+    int32 age = 4;
+}
+
