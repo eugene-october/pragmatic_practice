@@ -1,0 +1,75 @@
+deployment:
+  name: analytics-pipeline
+  namespace: data-platform
+  replicas: 3
+  strategy: rolling_update
+  max_unavailable: 1
+  max_surge: 1
+  image:
+    repository: registry.internal/analytics
+    tag: "3.1.0"
+    pull_policy: IfNotPresent
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
+processing:
+  batch_size: 1000
+  parallelism: 8
+  checkpoint_interval: 600
+  source:
+    type: kafka
+    brokers:
+      - kafka-1.internal:9092
+      - kafka-2.internal:9092
+    topic: events.raw
+    consumer_group: analytics-consumer
+  sink:
+    type: postgres
+    connection: "postgresql://analytics:internal@sink.internal:5432/analytics"
+    table: processed_events
+
+scaling:
+  enabled: true
+  min_replicas: 3
+  max_replicas: 20
+  target_cpu: 70
+  target_memory: 75
+  scale_down:
+    stabilization_window: 300
+    percent: 50
+  scale_up:
+    stabilization_window: 60
+    percent: 100
+
+netdata:
+  enabled: true
+  port: 19999
+  history: 86400
+  memory_mode: ram
+  alarms:
+    enabled: true
+    notification_email: ops@data-platform.internal
+
+notifications:
+  provider: slack
+  webhook_url: "${SLACK_WEBHOOK_URL}"
+  channel: "#data-alerts"
+  events:
+    on_failure: true
+    on_scale_up: true
+    on_scale_down: false
+  escalation:
+    levels: 3
+    interval_minutes: 15
+
+backup:
+  enabled: true
+  schedule: "0 2 * * *"
+  retention_days: 30
+  destination: s3://backups.internal/analytics/
+  encryption: true
