@@ -2,7 +2,9 @@
 
 
 def addProductToCart(shoppingCart, productId, unitPrice, quantity=1):
-    shoppingCart.append({"productId": productId, "unitPrice": unitPrice, "quantity": quantity})
+    shoppingCart.append(
+        {"productId": productId, "unitPrice": unitPrice, "quantity": quantity}
+    )
     return shoppingCart
 
 
