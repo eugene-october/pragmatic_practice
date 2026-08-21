@@ -2,12 +2,12 @@ using fsm_strings_parse.fsm.states;
 
 namespace fsm_strings_parse.fsm
 {
-    class FSMResult
+    public class FSMResult
     {
         public IEnumerable<char>? Data { get; set; }
     }
 
-    class FSM
+    public class FSM
     {
         private static readonly StateType _defaultStateType = StateType.DEFAULT;
         private AbstractState _currentState = CreateState(_defaultStateType);
