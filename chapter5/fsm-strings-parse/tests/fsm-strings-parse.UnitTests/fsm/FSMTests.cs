@@ -9,17 +9,23 @@ public class FSMTests
     {
         // Arrange
         var fsm = new FSM();
-        FSMResult? result = null;
+        List<char> data = [];
 
         // Act
         foreach (var character in "\"hello\"")
         {
-            result = fsm.Process(character);
+            FSMResult result = fsm.Process(character);
+
+            if (result.Data is null)
+            {
+                continue;
+            }
+
+            data.AddRange(result.Data);
         }
 
         // Assert
-        Assert.NotNull(result);
-        Assert.NotNull(result.Data);
-        Assert.Equal("hello", new string(result.Data.ToArray()));
+        Assert.NotNull(data);
+        Assert.Equal("hello", new string(data.ToArray()));
     }
 }

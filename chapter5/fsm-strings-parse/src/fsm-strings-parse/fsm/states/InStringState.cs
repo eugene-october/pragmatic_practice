@@ -20,8 +20,6 @@ namespace fsm_strings_parse.fsm.states
                 };
             }
 
-            _data.Add(e);
-
             if (e == '"')
             {
                 return new StateTransition
@@ -30,6 +28,8 @@ namespace fsm_strings_parse.fsm.states
                     Output = _data
                 };
             }
+
+            _data.Add(e);
 
             return new StateTransition
             {

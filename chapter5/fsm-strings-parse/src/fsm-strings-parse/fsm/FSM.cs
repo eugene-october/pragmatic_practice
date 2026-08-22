@@ -19,19 +19,13 @@ namespace fsm_strings_parse.fsm
             var newState = _currentState.MakeTransition(e);
             _currentState = CreateState(newState.NextState);
 
-            if (newState.NextState == StateType.FINISHED_STRING)
+            if (newState.Output.Count > 0)
             {
                 return new FSMResult
                 {
-                    Data = _data
+                    Data = newState.Output
                 };
             }
-
-            if (newState.Output.Count > 0)
-            {
-                _data = _data.Concat(newState.Output);
-            }
-
 
             return new FSMResult();
         }
