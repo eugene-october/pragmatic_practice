@@ -28,4 +28,33 @@ public class FSMTests
         Assert.NotNull(data);
         Assert.Equal("hello", new string(data.ToArray()));
     }
+
+    [Fact]
+    public void Process_EscapedText_ReturnsTextInsideQuotes()
+    {
+        // Arrange
+        var textWithinQuotes = "START of super exciting text within a quote which eventually comes to an END";
+        var textToBeParsed = $"contains a mega quote: \\\"{textWithinQuotes}\\\". Isn't it cool?";
+        var asset = $"Hello, this is text, which \"{textToBeParsed}\" What do you think";
+        var fsm = new FSM();
+        List<char> data = [];
+
+        // Act
+        foreach (var character in asset)
+        {
+            FSMResult result = fsm.Process(character);
+
+            if (result.Data is null)
+            {
+                continue;
+            }
+
+            data.AddRange(result.Data);
+        }
+
+        // Assert
+        var resultingText = textToBeParsed.Replace("\\", "");
+        Assert.NotNull(data);
+        Assert.Equal(resultingText, new string(data.ToArray()));
+    }
 }
