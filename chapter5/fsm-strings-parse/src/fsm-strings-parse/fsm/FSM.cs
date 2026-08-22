@@ -26,45 +26,40 @@ namespace fsm_strings_parse.fsm
     public class FSM
     {
         private static readonly StateType _defaultStateType = StateType.DEFAULT;
-        private AbstractState _currentState = CreateState(_defaultStateType);
+        private AbstractStateHandler _currentStateHandler = CreateStateHandler(_defaultStateType);
 
         public FSMResult Process(char e)
         {
-            var fsmEvent = CreateEvent(e);
-            var newState = _currentState.MakeTransition(fsmEvent);
-            _currentState = CreateState(newState.NextState);
+            Event fsmEvent = CreateEvent(e);
+            StateHandleResult stateHandleResult = _currentStateHandler.MakeTransition(fsmEvent);
+            _currentStateHandler = CreateStateHandler(stateHandleResult.NextState);
 
-            if (newState.Output is not null)
+            return new FSMResult
             {
-                return new FSMResult
-                {
-                    Data = newState.Output
-                };
-            }
-
-            return new FSMResult();
+                Data = stateHandleResult.Output
+            };
         }
 
-        private static AbstractState CreateState(StateType type)
+        private static AbstractStateHandler CreateStateHandler(StateType type)
         {
             switch (type)
             {
                 case StateType.DEFAULT:
-                    return new DefaultState();
+                    return new DefaultStateHandler();
                 case StateType.IN_STRING:
-                    return new InStringState();
+                    return new InStringStateHandler();
                 case StateType.ADD_NEXT:
-                    return new AddNextState();
+                    return new AddNextStateHandler();
                 case StateType.FINISHED_STRING:
-                    return new FinishedStringState();
+                    return new FinishedStringStateHandler();
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        private static BaseEvent CreateEvent(char token)
+        private static Event CreateEvent(char token)
         {
-            return new BaseEvent
+            return new Event
             {
                 Type = CreateEventType(token),
                 Payload = token

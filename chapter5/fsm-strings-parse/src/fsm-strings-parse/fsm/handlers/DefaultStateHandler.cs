@@ -2,24 +2,24 @@ using fsm_strings_parse.fsm.events;
 
 namespace fsm_strings_parse.fsm.states
 {
-    public class DefaultState : AbstractState
+    public class DefaultStateHandler : AbstractStateHandler
     {
         public override IEnumerable<StateType> GetAllowedTransitions()
         {
             return new[] { StateType.DEFAULT, StateType.IN_STRING };
         }
-        public override StateTransition MakeTransition(BaseEvent e)
+        public override StateHandleResult MakeTransition(Event e)
         {
             if (e.Type == EventType.QUOTE)
             {
-                return new StateTransition
+                return new StateHandleResult
                 {
                     NextState = StateType.IN_STRING,
                     Output = null
                 };
             }
 
-            return new StateTransition
+            return new StateHandleResult
             {
                 NextState = StateType.DEFAULT,
                 Output = null
