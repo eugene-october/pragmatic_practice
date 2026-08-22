@@ -16,12 +16,10 @@ public class FSMTests
         {
             FSMResult result = fsm.Process(character);
 
-            if (result.Data is null)
+            if (result.Data is char token)
             {
-                continue;
+                data.Add(token);
             }
-
-            data.AddRange(result.Data);
         }
 
         // Assert
@@ -44,12 +42,10 @@ public class FSMTests
         {
             FSMResult result = fsm.Process(character);
 
-            if (result.Data is null)
+            if (result.Data is char token)
             {
-                continue;
+                data.Add(token);
             }
-
-            data.AddRange(result.Data);
         }
 
         // Assert

@@ -5,7 +5,7 @@ namespace fsm_strings_parse.fsm.states
     public class StateTransition()
     {
         public required StateType NextState { get; set; }
-        public required ICollection<char> Output { get; set; }
+        public char? Output { get; set; }
     }
 
     public abstract class AbstractState

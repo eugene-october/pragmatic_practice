@@ -4,9 +4,6 @@ namespace fsm_strings_parse.fsm.states
 {
     public class FinishedStringState : AbstractState
     {
-        private readonly IList<char> _data;
-
-        public FinishedStringState() => _data = [];
         public override IEnumerable<StateType> GetAllowedTransitions()
         {
             return new[] { StateType.DEFAULT };
@@ -16,7 +13,7 @@ namespace fsm_strings_parse.fsm.states
             return new StateTransition
             {
                 NextState = StateType.DEFAULT,
-                Output = _data
+                Output = null
             };
         }
     }

@@ -5,7 +5,7 @@ namespace fsm_strings_parse.fsm
 {
     public class FSMResult
     {
-        public IEnumerable<char>? Data { get; set; }
+        public char? Data { get; set; }
     }
 
     public enum StateType
@@ -27,7 +27,6 @@ namespace fsm_strings_parse.fsm
     {
         private static readonly StateType _defaultStateType = StateType.DEFAULT;
         private AbstractState _currentState = CreateState(_defaultStateType);
-        private IEnumerable<char> _data = new List<char> { };
 
         public FSMResult Process(char e)
         {
@@ -35,7 +34,7 @@ namespace fsm_strings_parse.fsm
             var newState = _currentState.MakeTransition(fsmEvent);
             _currentState = CreateState(newState.NextState);
 
-            if (newState.Output.Count > 0)
+            if (newState.Output is not null)
             {
                 return new FSMResult
                 {
