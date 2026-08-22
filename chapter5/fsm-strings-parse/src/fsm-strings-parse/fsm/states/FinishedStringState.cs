@@ -1,3 +1,5 @@
+using fsm_strings_parse.fsm.events;
+
 namespace fsm_strings_parse.fsm.states
 {
     public class FinishedStringState : AbstractState
@@ -9,7 +11,7 @@ namespace fsm_strings_parse.fsm.states
         {
             return new[] { StateType.DEFAULT };
         }
-        public override StateTransition MakeTransition(char e)
+        public override StateTransition MakeTransition(BaseEvent e)
         {
             return new StateTransition
             {

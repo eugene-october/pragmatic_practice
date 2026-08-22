@@ -1,13 +1,7 @@
+using fsm_strings_parse.fsm.events;
+
 namespace fsm_strings_parse.fsm.states
 {
-    public enum StateType
-    {
-        DEFAULT, // skip current
-        IN_STRING, // " met
-        FINISHED_STRING, // " closed, concat whole string
-        ADD_NEXT, // \ met, take next char
-    }
-
     public class StateTransition()
     {
         public required StateType NextState { get; set; }
@@ -21,6 +15,6 @@ namespace fsm_strings_parse.fsm.states
         {
             return GetAllowedTransitions().Contains(stateType);
         }
-        public abstract StateTransition MakeTransition(char e);
+        public abstract StateTransition MakeTransition(BaseEvent e);
     }
 }

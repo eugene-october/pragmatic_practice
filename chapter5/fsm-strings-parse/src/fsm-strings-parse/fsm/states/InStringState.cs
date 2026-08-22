@@ -1,3 +1,5 @@
+using fsm_strings_parse.fsm.events;
+
 namespace fsm_strings_parse.fsm.states
 {
     public class InStringState : AbstractState
@@ -9,9 +11,9 @@ namespace fsm_strings_parse.fsm.states
         {
             return new[] { StateType.IN_STRING, StateType.ADD_NEXT, StateType.FINISHED_STRING };
         }
-        public override StateTransition MakeTransition(char e)
+        public override StateTransition MakeTransition(BaseEvent e)
         {
-            if (e == '\\')
+            if (e.Type == EventType.ESCAPE)
             {
                 return new StateTransition
                 {
@@ -20,7 +22,7 @@ namespace fsm_strings_parse.fsm.states
                 };
             }
 
-            if (e == '"')
+            if (e.Type == EventType.QUOTE)
             {
                 return new StateTransition
                 {
@@ -29,7 +31,7 @@ namespace fsm_strings_parse.fsm.states
                 };
             }
 
-            _data.Add(e);
+            _data.Add(e.Payload);
 
             return new StateTransition
             {

@@ -1,3 +1,5 @@
+using fsm_strings_parse.fsm.events;
+
 namespace fsm_strings_parse.fsm.states
 {
     public class DefaultState : AbstractState
@@ -9,9 +11,9 @@ namespace fsm_strings_parse.fsm.states
         {
             return new[] { StateType.DEFAULT, StateType.IN_STRING };
         }
-        public override StateTransition MakeTransition(char e)
+        public override StateTransition MakeTransition(BaseEvent e)
         {
-            if (e == '"')
+            if (e.Type == EventType.QUOTE)
             {
                 return new StateTransition
                 {

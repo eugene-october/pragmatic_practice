@@ -1,3 +1,5 @@
+using fsm_strings_parse.fsm.events;
+
 namespace fsm_strings_parse.fsm.states
 {
     public class AddNextState : AbstractState
@@ -9,9 +11,9 @@ namespace fsm_strings_parse.fsm.states
         {
             return new[] { StateType.IN_STRING };
         }
-        public override StateTransition MakeTransition(char e)
+        public override StateTransition MakeTransition(BaseEvent e)
         {
-            _data.Add(e);
+            _data.Add(e.Payload);
 
             return new StateTransition
             {
