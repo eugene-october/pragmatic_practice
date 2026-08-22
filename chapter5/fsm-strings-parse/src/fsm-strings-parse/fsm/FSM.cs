@@ -32,6 +32,12 @@ namespace fsm_strings_parse.fsm
         {
             Event fsmEvent = CreateEvent(e);
             StateHandleResult stateHandleResult = _currentStateHandler.MakeTransition(fsmEvent);
+
+            if (!_currentStateHandler.IsTransitionAllowed(stateHandleResult.NextState))
+            {
+                throw new Exception("Invalid transition");
+            }
+
             _currentStateHandler = CreateStateHandler(stateHandleResult.NextState);
 
             return new FSMResult
