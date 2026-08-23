@@ -1,18 +1,16 @@
-using fsm_strings_parse.fsm.events;
-
-namespace fsm_strings_parse.fsm.states
+namespace fsm_strings_parse.fsm.handlers
 {
     public class StateHandleResult()
     {
-        public required StateType NextState { get; set; }
+        public required States NextState { get; set; }
         // Output is produced only if needed. Some tokens should be ignored
         public char? Output { get; set; }
     }
 
-    public abstract class AbstractStateHandler
+    public abstract class StateHandler
     {
-        public abstract IEnumerable<StateType> GetAllowedTransitions();
-        public bool IsTransitionAllowed(StateType stateType)
+        public abstract IEnumerable<States> GetAllowedTransitions();
+        public bool IsTransitionAllowed(States stateType)
         {
             return GetAllowedTransitions().Contains(stateType);
         }

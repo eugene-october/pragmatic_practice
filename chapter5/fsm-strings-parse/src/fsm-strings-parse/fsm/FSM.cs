@@ -1,5 +1,4 @@
-using fsm_strings_parse.fsm.events;
-using fsm_strings_parse.fsm.states;
+using fsm_strings_parse.fsm.handlers;
 
 namespace fsm_strings_parse.fsm
 {
@@ -8,7 +7,7 @@ namespace fsm_strings_parse.fsm
         public char? Data { get; set; }
     }
 
-    public enum StateType
+    public enum States
     {
         DEFAULT, // skip current
         IN_STRING, // " met
@@ -16,7 +15,7 @@ namespace fsm_strings_parse.fsm
         ADD_NEXT, // \ met, take next char
     }
 
-    public enum EventType
+    public enum Trigger
     {
         TOKEN, // any letter
         QUOTE, // "
@@ -25,8 +24,8 @@ namespace fsm_strings_parse.fsm
 
     public class FSM
     {
-        private static readonly StateType _defaultStateType = StateType.DEFAULT;
-        private AbstractStateHandler _currentStateHandler = CreateStateHandler(_defaultStateType);
+        private static readonly States _defaultStateType = States.DEFAULT;
+        private StateHandler _currentStateHandler = CreateStateHandler(_defaultStateType);
 
         public FSMResult Process(char e)
         {
@@ -46,21 +45,16 @@ namespace fsm_strings_parse.fsm
             };
         }
 
-        private static AbstractStateHandler CreateStateHandler(StateType type)
+        private static StateHandler CreateStateHandler(States type)
         {
-            switch (type)
+            return type switch
             {
-                case StateType.DEFAULT:
-                    return new DefaultStateHandler();
-                case StateType.IN_STRING:
-                    return new InStringStateHandler();
-                case StateType.ADD_NEXT:
-                    return new AddNextStateHandler();
-                case StateType.FINISHED_STRING:
-                    return new FinishedStringStateHandler();
-                default:
-                    throw new NotImplementedException();
-            }
+                States.DEFAULT => new DefaultStateHandler(),
+                States.IN_STRING => new InStringStateHandler(),
+                States.ADD_NEXT => new AddNextStateHandler(),
+                States.FINISHED_STRING => new FinishedStringStateHandler(),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private static Event CreateEvent(char token)
@@ -72,17 +66,14 @@ namespace fsm_strings_parse.fsm
             };
         }
 
-        private static EventType CreateEventType(char token)
+        private static Trigger CreateEventType(char token)
         {
-            switch (token)
+            return token switch
             {
-                case '"':
-                    return EventType.QUOTE;
-                case '\\':
-                    return EventType.ESCAPE;
-                default:
-                    return EventType.TOKEN;
-            }
+                '"' => Trigger.QUOTE,
+                '\\' => Trigger.ESCAPE,
+                _ => Trigger.TOKEN,
+            };
         }
     }
 }

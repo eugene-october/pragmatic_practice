@@ -1,18 +1,16 @@
-using fsm_strings_parse.fsm.events;
-
-namespace fsm_strings_parse.fsm.states
+namespace fsm_strings_parse.fsm.handlers
 {
-    public class AddNextStateHandler : AbstractStateHandler
+    public class AddNextStateHandler : StateHandler
     {
-        public override IEnumerable<StateType> GetAllowedTransitions()
+        public override IEnumerable<States> GetAllowedTransitions()
         {
-            return new[] { StateType.IN_STRING };
+            return new[] { States.IN_STRING };
         }
         public override StateHandleResult MakeTransition(Event e)
         {
             return new StateHandleResult
             {
-                NextState = StateType.IN_STRING,
+                NextState = States.IN_STRING,
                 Output = e.Payload
             };
         }

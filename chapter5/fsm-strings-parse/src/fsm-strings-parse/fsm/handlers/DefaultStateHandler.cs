@@ -1,27 +1,25 @@
-using fsm_strings_parse.fsm.events;
-
-namespace fsm_strings_parse.fsm.states
+namespace fsm_strings_parse.fsm.handlers
 {
-    public class DefaultStateHandler : AbstractStateHandler
+    public class DefaultStateHandler : StateHandler
     {
-        public override IEnumerable<StateType> GetAllowedTransitions()
+        public override IEnumerable<States> GetAllowedTransitions()
         {
-            return new[] { StateType.DEFAULT, StateType.IN_STRING };
+            return new[] { States.DEFAULT, States.IN_STRING };
         }
         public override StateHandleResult MakeTransition(Event e)
         {
-            if (e.Type == EventType.QUOTE)
+            if (e.Type == Trigger.QUOTE)
             {
                 return new StateHandleResult
                 {
-                    NextState = StateType.IN_STRING,
+                    NextState = States.IN_STRING,
                     Output = null
                 };
             }
 
             return new StateHandleResult
             {
-                NextState = StateType.DEFAULT,
+                NextState = States.DEFAULT,
                 Output = null
             };
         }

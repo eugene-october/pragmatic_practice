@@ -1,9 +1,8 @@
-namespace fsm_strings_parse.fsm.events
+namespace fsm_strings_parse.fsm
 {
-
     public class Event
     {
-        public EventType Type { get; set; }
+        public Trigger Type { get; set; }
         public char Payload { get; set; }
     }
 }
