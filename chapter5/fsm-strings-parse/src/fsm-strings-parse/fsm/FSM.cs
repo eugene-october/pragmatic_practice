@@ -24,12 +24,12 @@ namespace fsm_strings_parse.fsm
 
     public class FSM
     {
-        private static readonly States _defaultStateType = States.DEFAULT;
-        private StateHandler _currentStateHandler = CreateStateHandler(_defaultStateType);
+        private States _currentState = States.DEFAULT;
 
         public FSMResult Process(char e)
         {
             Event fsmEvent = CreateEvent(e);
+            StateHandler _currentStateHandler = CreateStateHandler(_currentState);
             StateHandleResult stateHandleResult = _currentStateHandler.MakeTransition(fsmEvent);
 
             if (!_currentStateHandler.IsTransitionAllowed(stateHandleResult.NextState))
@@ -37,7 +37,7 @@ namespace fsm_strings_parse.fsm
                 throw new Exception("Invalid transition");
             }
 
-            _currentStateHandler = CreateStateHandler(stateHandleResult.NextState);
+            _currentState = stateHandleResult.NextState;
 
             return new FSMResult
             {
