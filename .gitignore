@@ -3,3 +3,5 @@ venv/
 # C#
 **/obj/
 **/bin/
+# JS
+node_modules/
