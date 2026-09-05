@@ -1,7 +1,45 @@
 import { start, dispatch, stop, spawnStateless } from 'nact';
 import { spawnCurrentUserLogin } from './currentUserLogin.js';
+import { spawnCurrentUserGetter } from './currentUserGetter.js';
 
 const system = start();
+
+const orchestrator = spawnStateless(system, async (msg, ctx) => {
+    const payload = { sender: ctx.self };
+
+    console.log("[RECEIVED MESSAGE]: ");
+    console.log("\t[SENDER NAME]: ", msg.sender.name);
+    msg.error && console.log("\t[ERROR]: ", msg.error);
+    msg.payload && console.log("\t[PAYLOAD]: ", msg.payload);
+
+    if (msg.error) {
+        console.error("Fatal error: ", msg.error);
+        return;
+    }
+
+    if (msg.sender === system) {
+        dispatch(currentUserLogin, payload);
+
+        return;
+    }
+
+    if (msg.sender === currentUserLogin) {
+        const userData = msg.payload;
+        const { accessToken } = userData;
+
+        dispatch(currentUserGetter, { ...payload, accessToken })
+
+        return;
+    }
+
+    if (msg.sender === currentUserGetter) {
+        return;
+    }
+});
+const currentUserLogin = spawnCurrentUserLogin(orchestrator);
+const currentUserGetter = spawnCurrentUserGetter(orchestrator);
+
+dispatch(orchestrator, { sender: system });
 
 // const greeter = spawnStateless(
 //     system, // parent
@@ -10,39 +48,3 @@ const system = start();
 // );
 
 // dispatch(greeter, { name: 'Jack' });
-
-// const delay = (time) => new Promise((res) => setTimeout(res, time));
-//
-// const ping = spawnStateless(system, async (msg, ctx) => {
-//     console.log(msg.value);
-//     // ping: Pong is a little slow. So I'm giving myself a little handicap :P
-//     await delay(500);
-//     dispatch(msg.sender, { value: ctx.name, sender: ctx.self });
-// }, 'ping');
-//
-// const pong = spawnStateless(system, async (msg, ctx) => {
-//     console.log(`---msg.sender---${msg.sender}`);
-//     console.log(msg.value);
-//     await delay(100);
-//     dispatch(msg.sender, { value: ctx.name, sender: ctx.self });
-// }, 'pong');
-//
-// dispatch(ping, { value: 'begin', sender: pong });
-
-const MAIN_LOOP_COMMAND = 'MAIN_LOOP_COMMAND';
-
-const orchestrator = spawnStateless(system, async (msg, ctx) => {
-    if (msg.action === MAIN_LOOP_COMMAND) {
-        dispatch(currentUserGetter, { sender: ctx.self });
-
-        return;
-    }
-    if (msg.sender === currentUserGetter) {
-        const userData = msg.payload;
-
-        console.log(`---JSON.stringify(userData, null, 4)---${JSON.stringify(userData, null, 4)}`);
-    }
-});
-const currentUserGetter = spawnCurrentUserLogin(orchestrator);
-
-dispatch(orchestrator, { action: MAIN_LOOP_COMMAND });

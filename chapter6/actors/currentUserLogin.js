@@ -13,18 +13,13 @@ export const spawnCurrentUserLogin = (parent) => spawnStateless(parent, async (m
         const res = await response.json();
 
         const payload = {
-            id: res.id,
-            username: res.username,
-            email: res.email,
-            firstName: res.firstName,
-            lastName: res.lastName,
             accessToken: res.accessToken,
         };
         const sender = ctx.self;
 
         dispatch(msg.sender, { payload, sender });
-    } catch (e) {
-        console.log(`--USER_LOGIN_ERROR-e---${e}`);
+    } catch (error) {
+        dispatch(msg.sender, { error });
     }
-}, 'ping');
+}, 'currentUserLogin');
 
