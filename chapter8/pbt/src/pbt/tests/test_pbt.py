@@ -7,6 +7,14 @@ def test_reversing_twice_returns_original(values: list[int]) -> None:
     assert list(reversed(list(reversed(values)))) == values
 
 
+@given(st.lists(st.integers()))
+def test_sort(values: list[int]) -> None:
+    values.sort()
+
+    for i in range(1, len(values)):
+        assert values[i] >= values[i - 1]
+
+
 @given(st.integers(0, 49))  # fails with (0, 50)
 def test_lesser_than_50(val: int) -> None:
     assert val < 50
